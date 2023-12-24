@@ -1,22 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 
 from flask import Flask, redirect, url_for, send_from_directory
 import threading
 
 import iptv
 
-class Main (object):
-    def __init__ (self) :
+
+class Main(object):
+    def __init__(self):
         pass
 
-    def scan (self):
+    def scan(self):
         Crawler = iptv.Iptv()
         Crawler.run()
 
-    def site (self):
+    def site(self):
         web = Flask(__name__)
-        resourcePath = '/srv/iptv/http'
+        resourcePath = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'http')
 
         @web.route('/')
         def index():
@@ -24,7 +26,7 @@ class Main (object):
 
         @web.route('/run')
         def run():
-            thread = threading.Thread(target = self.scan, args = (), daemon = True)
+            thread = threading.Thread(target=self.scan, args=(), daemon=True)
             thread.start()
 
             return redirect(url_for('log'))
@@ -42,26 +44,26 @@ class Main (object):
             return send_from_directory(resourcePath, 'log.txt')
 
         web.run(
-            host = '0.0.0.0',
-            port = 9527,  
-            debug = False 
+            host='0.0.0.0',
+            port=9527,
+            debug=False
         )
 
-    def run (self):
+    def run(self):
         threads = []
 
-        thread = threading.Thread(target = self.site, args = (), daemon = True)
+        thread = threading.Thread(target=self.site, args=(), daemon=True)
         thread.start()
         threads.append(thread)
 
-        thread = threading.Thread(target = self.scan, args = (), daemon = True)
+        thread = threading.Thread(target=self.scan, args=(), daemon=True)
         thread.start()
         threads.append(thread)
 
         for t in threads:
             t.join()
 
+
 if __name__ == '__main__':
     App = Main()
     App.run()
-
