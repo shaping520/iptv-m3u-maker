@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import os
-from python import tools
+import tools
 import time
 import re
-from python import db
+import db
 import threading
 from .threads import ThreadPool
 

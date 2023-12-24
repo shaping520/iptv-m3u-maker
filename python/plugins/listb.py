@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from python import tools
+import tools
 import time
 import re
-from python import db
+import db
 import threading
 
 

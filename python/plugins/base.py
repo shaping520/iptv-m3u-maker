@@ -4,10 +4,10 @@
 
 import time
 import re
-from python import db
+import db
 import threading
 
-from python import tools
+import tools
 
 
 class Source(object):
